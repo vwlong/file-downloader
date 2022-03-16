@@ -1,0 +1,24 @@
+<div *ngIf="files; else elseBlock">
+    <table>
+        <thead>
+            <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
+            <th>Selected </th>
+            <th>Download Selected</th>
+        </thead>
+        <thead>
+            <th></th>
+            <th>Name</th>
+            <th>Device</th>
+            <th>Path</th>
+            <th>Status</th>
+        </thead>
+        <tr *ngFor="let file of files; let i=index;">
+            <td><input type="checkbox" value="{{file.name}}" [(ngModel)]="file[i].checked"></td>
+            <td>{{file.name}}</td>
+            <td>{{file.device}}</td>
+            <td>{{file.path}}</td>
+            <td>{{file.status}}</td>
+        </tr>
+    </table>
+</div>
+<ng-template #elseBlock>No files found.</ng-template>
