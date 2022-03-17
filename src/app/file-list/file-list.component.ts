@@ -9,6 +9,9 @@ import { FilesService } from '../services/files.service';
 })
 export class FileListComponent implements OnInit {
   files: File[] = [];
+  selectedList: File[];
+  selectAll: boolean;
+  numberSelected: number = 0;
 
   constructor(private filesService: FilesService) { }
 
@@ -17,15 +20,49 @@ export class FileListComponent implements OnInit {
   }
 
   getFiles(): void {
-    this.files = this.filesService.getFiles()
+    this.files = this.filesService.getFiles();
   }
 
-  checkAllCheckBox(ev: any) {
-    this.files.forEach(x => x.checked = ev.target.checked)
+  checkUncheckAll(): void {
+    for (var i = 0; i < this.files.length; i++) {
+      this.files[i].selected = this.selectAll;
+    }
+    this.getSelectedFiles();
   }
 
-  isAllCheckBoxChecked() {
-    return this.files.every(x => x.checked);
+  // Check if all files are selected
+  isAllSelected(): void {
+    this.selectAll = this.files.every((file: File) => {
+      return file.selected;
+    })
+    this.getSelectedFiles();
   }
 
+  // Get files selected and number of files selected
+  getSelectedFiles(): void {
+    this.selectedList = [];
+    for (var i = 0; i < this.files.length; i++) {
+      if (this.files[i].selected)
+        this.selectedList.push(this.files[i]);
+    }
+    this.numberSelected = this.selectedList.length;
+  }
+
+  // Show path and device of files selected to download
+  downloadFiles(): void {
+    if (this.numberSelected == 0) {
+      alert("No files selected.");
+    }
+    else {
+      let displayFiles = "";
+      this.selectedList.forEach(file => {
+        if (file.status != "available") {
+          displayFiles += "File '" + file.name + "' is not available for download. \n\n";
+        } else {
+          displayFiles += "File: " + file.name + ", Path: " + file.path + ", Device: " + file.device + "\n\n";
+        }
+      });
+      alert(displayFiles);
+    }
+  }
 }

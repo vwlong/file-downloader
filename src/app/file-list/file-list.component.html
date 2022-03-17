@@ -1,23 +1,40 @@
 <div *ngIf="files; else elseBlock">
     <table>
-        <thead>
-            <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
-            <th>Selected </th>
-            <th>Download Selected</th>
+        <!-- Row with check/uncheck all, selected count, & download button -->
+        <thead class="download">
+            <th><input type="checkbox" [(ngModel)]="selectAll" (change)="checkUncheckAll()"
+                    [indeterminate]="numberSelected > 0 && numberSelected < files.length" /></th>
+            <th colspan="2" *ngIf="numberSelected > 0; else noneSelected">Selected {{numberSelected}}</th>
+            <ng-template #noneSelected>
+                <th colspan="2">None Selected</th>
+            </ng-template>
+            <th colspan="3">
+                <button (click)="downloadFiles()">
+                    <img src="https://www.svgrepo.com/show/393647/download-3.svg" height="13" width="13" />
+                    Download Selected
+                </button>
+            </th>
         </thead>
-        <thead>
+        <!-- Row with column labels -->
+        <thead class="headers">
             <th></th>
             <th>Name</th>
             <th>Device</th>
             <th>Path</th>
+            <th></th>
             <th>Status</th>
         </thead>
-        <tr *ngFor="let file of files; let i=index;">
-            <td><input type="checkbox" value="{{file.name}}" [(ngModel)]="file[i].checked"></td>
+        <tr *ngFor="let file of files; let i=index;" [class.selected]="file.selected">
+            <td><input type="checkbox" class="masterCheckbox" [(ngModel)]="file.selected" (change)="isAllSelected()" />
+            </td>
             <td>{{file.name}}</td>
             <td>{{file.device}}</td>
             <td>{{file.path}}</td>
-            <td>{{file.status}}</td>
+            <td *ngIf="file.status=='available'; else notAvailable"><span class="available"></span></td>
+            <ng-template #notAvailable>
+                <td></td>
+            </ng-template>
+            <td style="text-transform: capitalize;">{{file.status}}</td>
         </tr>
     </table>
 </div>

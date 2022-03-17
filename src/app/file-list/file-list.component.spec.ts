@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FileListComponent } from './file-list.component';
+import { FILE_LIST } from '../../assets/testing/FILE_LIST';
+import { FormsModule } from '@angular/forms';
 
 describe('FileListComponent', () => {
   let component: FileListComponent;
@@ -8,9 +9,10 @@ describe('FileListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FileListComponent ]
+      imports: [FormsModule],
+      declarations: [FileListComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -22,4 +24,5 @@ describe('FileListComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });

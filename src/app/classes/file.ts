@@ -3,5 +3,5 @@ export class File {
     device: string;
     path: string;
     status: string;
-    checked?: boolean;
+    selected?: boolean;
 }
