@@ -1,6 +1,6 @@
-<div *ngIf="files; else elseBlock">
+<div *ngIf="files; else noFiles">
     <table>
-        <!-- Row with check/uncheck all, selected count, & download button -->
+        <!-- Header row with check/uncheck all, selected count, & download button -->
         <thead class="download">
             <th><input type="checkbox" [(ngModel)]="selectAll" (change)="checkUncheckAll()"
                     [indeterminate]="numberSelected > 0 && numberSelected < files.length" /></th>
@@ -15,7 +15,7 @@
                 </button>
             </th>
         </thead>
-        <!-- Row with column labels -->
+        <!-- Header row with column labels -->
         <thead class="headers">
             <th></th>
             <th>Name</th>
@@ -24,12 +24,14 @@
             <th></th>
             <th>Status</th>
         </thead>
+        <!-- List of files -->
         <tr *ngFor="let file of files; let i=index;" [class.selected]="file.selected">
             <td><input type="checkbox" class="masterCheckbox" [(ngModel)]="file.selected" (change)="isAllSelected()" />
             </td>
             <td>{{file.name}}</td>
             <td>{{file.device}}</td>
             <td>{{file.path}}</td>
+            <!-- Green dot status indicator, shown only if the file is available for download -->
             <td *ngIf="file.status=='available'; else notAvailable"><span class="available"></span></td>
             <ng-template #notAvailable>
                 <td></td>
@@ -38,4 +40,4 @@
         </tr>
     </table>
 </div>
-<ng-template #elseBlock>No files found.</ng-template>
+<ng-template #noFiles>No files found.</ng-template>

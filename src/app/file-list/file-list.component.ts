@@ -23,6 +23,7 @@ export class FileListComponent implements OnInit {
     this.files = this.filesService.getFiles();
   }
 
+  // Select or unselect all files with the header checkbox
   checkUncheckAll(): void {
     for (var i = 0; i < this.files.length; i++) {
       this.files[i].selected = this.selectAll;
@@ -57,6 +58,7 @@ export class FileListComponent implements OnInit {
       let displayFiles = "";
       this.selectedList.forEach(file => {
         if (file.status != "available") {
+          // The path and device will not be shown for files not in the available status
           displayFiles += "File '" + file.name + "' is not available for download. \n\n";
         } else {
           displayFiles += "File: " + file.name + ", Path: " + file.path + ", Device: " + file.device + "\n\n";
